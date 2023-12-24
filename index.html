@@ -174,7 +174,7 @@
             const responseContainer = document.getElementById('responseContainer');
 
             // Determine the correct endpoint based on the selected version
-            const endpoint = version === 'v1' ? '/api/v1/ucode' : '/api/v2/ucode';
+            const endpoint = version === 'v1' ? 'https://hccapi.joshatticus.online/api/v1/ucode' : 'https://hccapi.joshatticus.online/api/v2/ucode';
 
             // Make a request to the backend API
             fetch(endpoint, {
@@ -192,7 +192,7 @@
                     responseContainer.textContent = 'Unlock Code: ' + data.unlock_code + '\n';
                     if (version === 'v2') {
                         // If v2, also request and display the flash code
-                        fetch('/api/v2/fcode', {
+                        fetch('https://hccapi.joshatticus.online/api/v2/fcode', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
