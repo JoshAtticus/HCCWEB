@@ -60,10 +60,10 @@
             right: 10px;
             cursor: pointer;
             font-size: 24px;
-            color: white; /* Set the icon color to white */
+            color: white;
         }
         .dark-mode-toggle:hover {
-            color: #f6ff00; /* Change color on hover */
+            color: #f6ff00;
         }
 
         nav {
@@ -80,7 +80,7 @@
         }
 
         nav a:hover {
-            color: #66e21e; /* Change color on hover */
+            color: #66e21e;
         }
 
         form {
@@ -92,11 +92,11 @@
         }
         form input, form select, form button {
             display: block;
-            width: calc(100% - 20px); /* Adjust width to account for padding */
+            width: 100%;
             padding: 10px;
-            margin-top: 10px;
-            box-sizing: border-box; /* Include padding and border in the element's width */
-            border: 1px solid #ccc; /* Add a border for better visual structure */
+            margin-top: 3px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
         }
         form button {
             background-color: #66e21e;
@@ -211,7 +211,7 @@
                 if (data.error) {
                     responseContainer.textContent = 'Error: ' + data.error;
                 } else {
-                    responseContainer.textContent = 'Unlock Code: ' + data.unlock_code + '\n';
+                    responseContainer.textContent = '<strong>Unlock Code:</strong> ' + data.unlock_code + '\n';
                     if (version === 'v2') {
                         // If v2, also request and display the flash code
                         fetch('https://hccapi.joshatticus.online/api/v2/fcode', {
@@ -222,9 +222,9 @@
                             body: JSON.stringify({ imei: imei })
                         }).then(response => response.json()).then(data => {
                             if (data.error) {
-                                responseContainer.textContent += 'Error: ' + data.error;
+                                responseContainer.textContent += '<br>Error: ' + data.error;
                             } else {
-                                responseContainer.textContent += 'Flash Code: ' + data.flash_code;
+                                responseContainer.textContent += '<br><strong>Flash Code:</strong> ' + data.flash_code;
                             }
                         });
                     }
