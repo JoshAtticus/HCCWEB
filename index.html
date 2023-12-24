@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/manifest/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/manifest/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/manifest/favicon-16x16.png">
+    <link rel="manifest" href="/manifest/site.webmanifest">
+    <link rel="mask-icon" href="/manifest/safari-pinned-tab.svg" color="#2d2d2d">
+    <link rel="shortcut icon" href="/manifest/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="JoshAtticus">
+    <meta name="application-name" content="JoshAtticus">
+    <meta name="msapplication-TileColor" content="#2d2d2d">
+    <meta name="msapplication-TileImage" content="/manifest/mstile-144x144.png">
+    <meta name="msapplication-config" content="/manifest/browserconfig.xml">
+    <meta name="theme-color" content="#2d2d2d">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCCWEB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.5s, color 0.5s;
+        }
+        a {
+            color:#00c8ff;
+        }
+        body.dark-mode {
+            background-color: #333;
+            color: white;
+        }
+        header {
+            background-color: #66e21e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        footer {
+            background-color: #3d3d3d;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .dark-mode-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            color: white; /* Set the icon color to white */
+        }
+        .dark-mode-toggle:hover {
+            color: #f6ff00; /* Change color on hover */
+        }
+
+        nav {
+            background-color: #3d3d3d;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        nav a:hover {
+            color: #66e21e; /* Change color on hover */
+        }
+
+        form {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form input, form select, form button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        form button {
+            background-color: #66e21e;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #57c917;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e7f4e4;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><marquee>hccweb (huawei code calcuator web)</marquee></h1>
+</header>
+<main>
+        <section>
+            <h2>Huawei Modem Unlock & Flash code calculator</h2>
+            <form id="codeForm">
+                <input type="text" id="imeiInput" placeholder="Enter IMEI" required>
+                <select id="versionSelect">
+                    <option value="v1">v1</option>
+                    <option value="v2">v2</option>
+                </select>
+                <button type="submit">Generate Codes</button>
+            </form>
+            <div class="response" id="responseContainer" style="display: none;"></div>
+        </section>
+    </main>
+<footer>
+     &copy; Copyright JoshAtticus 2023
+</footer>
+
+<div class="dark-mode-toggle" onclick="toggleDarkMode()">
+    <i class="fas fa-sun"></i>
+</div>
+
+<script>
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        
+        // Save user's preference to localStorage
+        const isDarkMode = body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode);
+    }
+
+    // Check user's preferred color scheme and set dark mode accordingly
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedDarkMode = localStorage.getItem('darkMode');
+    
+    if (storedDarkMode !== null) {
+        // Use the stored preference if available
+        const body = document.body;
+        body.classList.toggle('dark-mode', JSON.parse(storedDarkMode));
+    } else if (prefersDarkMode) {
+        // Use the system preference if there is no stored preference
+        toggleDarkMode();
+    }
+</script>
+ <script>
+        document.getElementById('codeForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            const imei = document.getElementById('imeiInput').value;
+            const version = document.getElementById('versionSelect').value;
+            const responseContainer = document.getElementById('responseContainer');
+
+            // Determine the correct endpoint based on the selected version
+            const endpoint = version === 'v1' ? '/api/v1/ucode' : '/api/v2/ucode';
+
+            // Make a request to the backend API
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ imei: imei })
+            }).then(response => response.json()).then(data => {
+                // Display the response
+                responseContainer.style.display = 'block';
+                if (data.error) {
+                    responseContainer.textContent = 'Error: ' + data.error;
+                } else {
+                    responseContainer.textContent = 'Unlock Code: ' + data.unlock_code + '\n';
+                    if (version === 'v2') {
+                        // If v2, also request and display the flash code
+                        fetch('/api/v2/fcode', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ imei: imei })
+                        }).then(response => response.json()).then(data => {
+                            if (data.error) {
+                                responseContainer.textContent += 'Error: ' + data.error;
+                            } else {
+                                responseContainer.textContent += 'Flash Code: ' + data.flash_code;
+                            }
+                        });
+                    }
+                }
+            }).catch(error => {
+                responseContainer.style.display = 'block';
+                responseContainer.textContent = 'An error occurred while generating the codes.';
+            });
+        });
+    </script>
+</body>
+</html>
