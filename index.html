@@ -143,16 +143,25 @@
 </header>
 <main>
         <section>
-            <h2>Huawei Modem Unlock & Flash code calculator</h2>
+            <h2>Huawei Modem Unlock & Flash code generator</h2>
+            <p>This site <b>only</b> works on <b>Huawei Portable and USB modems</b></p>
             <form id="codeForm">
                 <input type="text" id="imeiInput" placeholder="Enter IMEI" required>
+                <p>Device variant</p>
                 <select id="versionSelect">
-                    <option value="v1">v1</option>
-                    <option value="v2">v2</option>
+                    <option value="v2">v2 (for devices with IMEIs starting in 35)</option>
+                    <option value="v1">v1 (for devices with IMEIs starting in 86)</option>
                 </select>
                 <button type="submit">Get Unlock Code(s)</button>
             </form>
             <div class="response" id="responseContainer" style="display: none;"></div>
+        </section>
+        <br>
+        <section>
+            <h2>How it works + Privacy</h2>
+            <p>This site is a frontend for another project I'm working on, <a href="https://github.com/JoshAtticus/HCCAPI">HCCAPI</a> which is an API for generating Huawei Modem unlock codes. Go check that out if you'd like to see how it works or host the API yourself for your own app or website.</p>
+            <p>As for privacy, this site is 100% ad and tracker free. If you like my work, please leave a star on <a href="https://github.com/JoshAtticus/HCCWEB">GitHub</a> (I don't accept monetary donations).</p>
+            <p>When using this site, your IP address will be logged for legal purposes and will be associated with all IMEIs you generate unlock codes for along with how many requests you make to the API and when you first + last used the API. None of this data is shared or sold to anyone other than law enforcement if requested.</p>
         </section>
     </main>
 <footer>
