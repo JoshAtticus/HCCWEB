@@ -209,9 +209,9 @@
                 // Display the response
                 responseContainer.style.display = 'block';
                 if (data.error) {
-                    responseContainer.textContent = 'Error: ' + data.error;
+                    responseContainer.innerHTML = 'Error: ' + data.error;
                 } else {
-                    responseContainer.textContent = '<strong>Unlock Code:</strong> ' + data.unlock_code + '\n';
+                    responseContainer.innerHTML = 'Unlock Code: <strong>' + data.unlock_code + '</strong>';
                     if (version === 'v2') {
                         // If v2, also request and display the flash code
                         fetch('https://hccapi.joshatticus.online/api/v2/fcode', {
@@ -222,16 +222,16 @@
                             body: JSON.stringify({ imei: imei })
                         }).then(response => response.json()).then(data => {
                             if (data.error) {
-                                responseContainer.textContent += '<br>Error: ' + data.error;
+                                responseContainer.innerHTML += '<br>Error: ' + data.error;
                             } else {
-                                responseContainer.textContent += '<br><strong>Flash Code:</strong> ' + data.flash_code;
+                                responseContainer.innerHTML += '<br>Flash Code: <strong>' + data.flash_code + '</strong>';
                             }
                         });
                     }
                 }
             }).catch(error => {
                 responseContainer.style.display = 'block';
-                responseContainer.textContent = 'An error occurred while generating the codes.';
+                responseContainer.innerHTML = 'An error occurred while generating the codes.';
             });
         });
     </script>
